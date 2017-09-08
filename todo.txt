@@ -1,0 +1,18 @@
+1. Add event handler
+2. Get input values
+3. Add new item to data structure
+4. Add item to UI
+5. Calculate budget
+6. Update UI
+
+UI MODULE
+  2. Get input values
+  4. Add item to UI
+  6. Update UI
+
+DATA MODULE
+  3. Add new item to data structure
+  5. Calculate budget
+
+CONTROLLER MODULE
+  1. Add event handler

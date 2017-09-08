@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Budgety</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:100,300,400,600" rel="stylesheet" type="text/css">
+  <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <section class="top pb-5 pt-3">
+    <div class="budget m-auto text-center">
+      <div class="budget-title">
+        Avalilable Budget in <span class="budget-title-month">%Month%</span>
+      </div>
+      <div class="budget-value">+2,345.64</div>
+
+      <div class="row budget-income mb-3 p-2">
+        <div class="col-md-6 budget-income-text">Income</div>
+        <div class="col-md-6">
+          <div class="budget-income-value float-left">+ 4,300.00</div>
+          <div class="budget-income-percentage">&nbsp;</div>
+        </div>
+      </div>
+      <div class="row budget-expenses p-2">
+        <div class="col-md-6 budget-expenses-text">Expenses</div>
+        <div class="col-md-6">
+          <div class="budget-expenses-value float-left">- 1,654.36</div>
+          <div class="budget-expenses-percentage">45%</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- BOTTOM SECTION -->
+  <section class="bottom">
+    <div class="add">
+      <div class="container text-center mt-3">
+        <select name="add-type" id="" class="add-type">
+          <option value="inc" selected>+</option>
+          <option value="exp">-</option>
+        </select>
+          <input type="text" class="add-description" placeholder="Add description">
+          <input type="number" class="add-value" placeholder="Value">
+          <button class="add-btn"><i class="ion-ios-checkmark-outline"></i></button>
+      </div>
+    </div>
+    <div class="lists container">
+      <div class="row">
+        <div class="col-md-6 income">
+          <h2 class="income-title">Income</h2>
+          <div class="income-list">
+            <!--
+              <div class="item clearfix" id="income-0">
+                  <div class="item-description">Salary</div>
+                  <div class="right clearfix">
+                      <div class="item-value">+ 2,100.00</div>
+                      <div class="item-delete">
+                          <button class="item-delete-btn"><i class="ion-ios-close-outline"></i></button>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="item clearfix" id="income-1">
+                  <div class="item-description">Sold car</div>
+                  <div class="right clearfix">
+                      <div class="item-value">+ 1,500.00</div>
+                      <div class="item-delete">
+                          <button class="item-delete-btn"><i class="ion-ios-close-outline"></i></button>
+                      </div>
+                  </div>
+              </div>
+            -->
+          </div>
+        </div>
+        <div class="col-md-6 expenses">
+          <h2 class="expenses-title">Expenses</h2>
+          <div class="expenses-list">
+            <!--
+                  <div class="item clearfix" id="expense-0">
+                      <div class="item-description">Apartment rent</div>
+                      <div class="right clearfix">
+                          <div class="item-value">- 900.00</div>
+                          <div class="item-percentage">21%</div>
+                          <div class="item-delete">
+                              <button class="item-delete-btn"><i class="ion-ios-close-outline"></i></button>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="item clearfix" id="expense-1">
+                      <div class="item-description">Grocery shopping</div>
+                      <div class="right clearfix">
+                          <div class="item-value">- 435.28</div>
+                          <div class="item-percentage">10%</div>
+                          <div class="item-delete">
+                              <button class="item-delete-btn"><i class="ion-ios-close-outline"></i></button>
+                          </div>
+                      </div>
+                  </div>
+              -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
