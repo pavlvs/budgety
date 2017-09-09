@@ -6,6 +6,12 @@ body {
   height: 100vh;
   position: relative; }
 
+.red {
+  color: #FF5049 !important; }
+
+.red-focus:focus {
+  border: 1px solid #FF5049 !important; }
+
 .top {
   background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url("../img/back.png");
   background-position: center;

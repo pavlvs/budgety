@@ -13,6 +13,9 @@ body {
   position: relative;
 }
 
+.red { color: $expenses !important; }
+.red-focus:focus { border: 1px solid $expenses !important; }
+
 .top {
   background-image: linear-gradient($back-gradient, $back-gradient), url('../img/back.png');
   background-position: center;
