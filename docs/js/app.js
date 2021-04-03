@@ -26,7 +26,7 @@ const budgetController = (function () {
     }
 
     const calculateTotal = function (type) {
-        const sum = 0
+        let sum = 0
         data.allItems[type].forEach(function (cur) {
             sum += cur.value
         })
@@ -35,12 +35,12 @@ const budgetController = (function () {
 
     const data = {
         allItems: {
-            exp: [],
-            inc: [],
+            expenses: [],
+            income: [],
         },
         totals: {
-            exp: 0,
-            inc: 0,
+            expenses: 0,
+            income: 0,
         },
         budget: 0,
         percentage: -1,
@@ -48,7 +48,7 @@ const budgetController = (function () {
 
     return {
         addItem: function (type, desc, val) {
-            const newItem, ID
+            let newItem, ID
 
             // Create new ID
             if (data.allItems[type].length == 0) {
@@ -58,9 +58,9 @@ const budgetController = (function () {
             }
 
             //  Create new item based on 'inc' or 'exp' type
-            if (type === 'exp') {
+            if (type === 'expenses') {
                 newItem = new Expense(ID, desc, val)
-            } else if (type === 'inc') {
+            } else if (type === 'income') {
                 newItem = new Income(ID, desc, val)
             }
 
@@ -72,7 +72,7 @@ const budgetController = (function () {
         },
 
         deleteItem: function (type, id) {
-            const ids, index
+            let ids, index
 
             ids = data.allItems[type].map(function (current) {
                 return current.id
@@ -87,14 +87,14 @@ const budgetController = (function () {
 
         calculateBudget: function () {
             // Calculate total income and expenses
-            calculateTotal('exp')
-            calculateTotal('inc')
+            calculateTotal('expenses')
+            calculateTotal('income')
             // Calculate the budget: income - expenses
-            data.budget = data.totals.inc - data.totals.exp
+            data.budget = data.totals.income - data.totals.expenses
             // calculate the percentage
-            if (data.totals.inc > 0) {
+            if (data.totals.income > 0) {
                 data.percentage = Math.round(
-                    (data.totals.exp / data.totals.inc) * 100
+                    (data.totals.expenses / data.totals.income) * 100
                 )
             } else {
                 data.percentage = -1
@@ -102,23 +102,23 @@ const budgetController = (function () {
         },
 
         calculatePercentages: function () {
-            data.allItems.exp.forEach(function (cur) {
-                cur.calcPercentage(data.totals.inc)
+            data.allItems.expenses.forEach(function (cur) {
+                cur.calcPercentage(data.totals.income)
             })
         },
 
         getPercentages: function () {
-            const allPerc = data.allItems.exp.map(function (cur) {
+            const allPercentages = data.allItems.expenses.map(function (cur) {
                 return cur.getPercentage()
             })
-            return allPerc
+            return allPercentages
         },
 
         getBudget: function () {
             return {
                 budget: data.budget,
-                totalInc: data.totals.inc,
-                totalExp: data.totals.exp,
+                totalInc: data.totals.income,
+                totalExp: data.totals.expenses,
                 percentage: data.percentage,
             }
         },
@@ -143,33 +143,33 @@ const UIController = (function () {
         expensesLabel: '.budget-expenses-value',
         percentageLabel: '.budget-expenses-percentage',
         lists: '.lists',
-        expensesPercLabel: '.item-percentage',
+        expensesPercentageLabel: '.item-percentage',
         dateLabel: '.budget-title-month',
     }
 
-    const formatNumber = function (num, type) {
-        const numSplit, int, dec, type
+    const formatNumber = function (number, type) {
+        let numberSplit, integer, decimal
         /*
         + or - before number
         exactly 2 decimal points
         comma separating thousands
         */
-        num = Math.abs(num)
-        num = num.toFixed(2)
+        number = Math.abs(number)
+        number = number.toFixed(2)
 
-        numSplit = num.split('.')
+        numberSplit = number.split('.')
 
-        int = numSplit[0]
-        if (int.length > 3) {
-            int =
-                int.substr(0, int.length - 3) +
+        integer = numberSplit[0]
+        if (integer.length > 3) {
+            integer =
+                integer.substr(0, integer.length - 3) +
                 ',' +
-                int.substr(int.length - 3, 3)
+                integer.substr(integer.length - 3, 3)
         }
 
-        dec = numSplit[1]
+        decimal = numberSplit[1]
 
-        return (type === 'exp' ? '-' : '+') + ' ' + int + '.' + dec
+        return (type === 'expenses' ? '-' : '+') + ' ' + integer + '.' + decimal
     }
 
     const nodeListForEach = function (list, callback) {
@@ -190,23 +190,43 @@ const UIController = (function () {
             }
         },
 
-        addListItem: function (obj, type) {
-            const html, newHTML, element
+        addListItem: function (object, type) {
+            let html, newHTML, element
 
             // Create HTML string with placehoder text
-            if (type === 'inc') {
+            if (type === 'income') {
                 element = DOMstrings.incomeContainer
-                html =
-                    '<div class="item row" id="inc-%id%"><div class="col-md-6 item-description">%description%</div><div class="col-md-6"><div class="item-value">%value%</div>        <div class="item-delete"><button class="item-delete-btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
-            } else if (type === 'exp') {
+                html = /*html*/ `
+                    <div class="item row" id="income-%id%">
+                        <div class="col-md-6 item-description">%description%</div>
+                        <div class="col-md-6">
+                            <div class="item-value">%value%</div>
+                            <div class="item-delete">
+                                <button class="item-delete-btn"><i class="ion-ios-close-outline"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                `
+            } else if (type === 'expenses') {
                 element = DOMstrings.expensesContainer
-                html =
-                    '<div class="item row" id="exp-%id%"><div class="col-md-6 item-description">%description%</div><div class="col-md-6"><div class="item-value">%value%</div><div class="item-percentage">21%</div><div class="item-delete"><button class="item-delete-btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+                html = /*html*/ `
+                    <div class="item row" id="expenses-%id%">
+                        <div class="col-md-6 item-description">%description%</div>
+                        <div class="col-md-6"><div class="item-value">%value%</div>
+                        <div class="item-percentage">21%</div>
+                        <div class="item-delete">
+                            <button class="item-delete-btn"><i class="ion-ios-close-outline"></i></button>
+                        </div>
+                    </div>
+                `
             }
-            // Replace the placehoder text with ctual data
-            newHTML = html.replace('%id%', obj.id)
-            newHTML = newHTML.replace('%description%', obj.description)
-            newHTML = newHTML.replace('%value%', formatNumber(obj.value, type))
+            // Replace the placeholder text with actual data
+            newHTML = html.replace('%id%', object.id)
+            newHTML = newHTML.replace('%description%', object.description)
+            newHTML = newHTML.replace(
+                '%value%',
+                formatNumber(object.value, type)
+            )
 
             // Insert the HTML into the DOM
             document
@@ -220,38 +240,38 @@ const UIController = (function () {
         },
 
         clearFields: function () {
-            const fields, fieldsArr
+            let fields, fieldsArray
 
             fields = document.querySelectorAll(
                 DOMstrings.inputDescription + ', ' + DOMstrings.inputValue
             )
 
-            fieldsArr = Array.prototype.slice.call(fields)
+            fieldsArray = Array.prototype.slice.call(fields)
 
-            fieldsArr.forEach(function (current, index, array) {
+            fieldsArray.forEach(function (current, index, array) {
                 current.value = ''
             })
 
-            fieldsArr[0].focus()
+            fieldsArray[0].focus()
         },
 
-        displayBudget: function (obj) {
-            const type
-            obj.budget > 0 ? (type = 'inc') : (type = 'exp')
+        displayBudget: function (object) {
+            let type
+            object.budget > 0 ? (type = 'income') : (type = 'expenses')
 
             document.querySelector(
                 DOMstrings.budgetLabel
-            ).textContent = formatNumber(obj.budget, type)
+            ).textContent = formatNumber(object.budget, type)
             document.querySelector(
                 DOMstrings.incomeLabel
-            ).textContent = formatNumber(obj.totalInc, 'inc')
+            ).textContent = formatNumber(object.totalInc, 'income')
             document.querySelector(
                 DOMstrings.expensesLabel
-            ).textContent = formatNumber(obj.totalExp, 'exp')
+            ).textContent = formatNumber(object.totalExp, 'expenses')
 
-            if (obj.percentage > 0) {
+            if (object.percentage > 0) {
                 document.querySelector(DOMstrings.percentageLabel).textContent =
-                    obj.percentage + '%'
+                    object.percentage + '%'
             } else {
                 document.querySelector(DOMstrings.percentageLabel).textContent =
                     '---'
@@ -260,7 +280,7 @@ const UIController = (function () {
 
         displayPercentages: function (percentages) {
             const fields = document.querySelectorAll(
-                DOMstrings.expensesPercLabel
+                DOMstrings.expensesPercentageLabel
             )
 
             nodeListForEach(fields, function (current, index) {
@@ -273,9 +293,9 @@ const UIController = (function () {
         },
 
         displayMonth: function () {
-            const now, year, month, months
+            let now, year, month
 
-            months = [
+            const months = [
                 'January',
                 'February',
                 'March',
@@ -331,8 +351,8 @@ const controller = (function (budgetCtrl, UICtrl) {
             .querySelector(DOM.addButton)
             .addEventListener('click', ctrlAddItem)
 
-        document.addEventListener('keypress', function (event) {
-            if (event.keyCode === 13 || event.which === 13) {
+        document.addEventListener('keydown', function (event) {
+            if (event.code === 13) {
                 ctrlAddItem()
             }
         })
@@ -367,10 +387,10 @@ const controller = (function (budgetCtrl, UICtrl) {
     }
 
     const ctrlAddItem = function () {
-        const input, newItem
+        let input, newItem
 
         // 1. Get the field input data
-        const input = UICtrl.getInput()
+        input = UICtrl.getInput()
 
         if (
             input.description !== '' &&
@@ -378,7 +398,7 @@ const controller = (function (budgetCtrl, UICtrl) {
             input.value > 0
         ) {
             // 2. Add the item to the budget controller
-            const newItem = budgetCtrl.addItem(
+            newItem = budgetCtrl.addItem(
                 input.type,
                 input.description,
                 input.value
@@ -399,7 +419,7 @@ const controller = (function (budgetCtrl, UICtrl) {
     }
 
     const ctrlDeleteItem = function (event) {
-        const itemID, splitID, type, ID
+        let itemID, splitID, type, ID
         itemID = event.target.parentNode.parentNode.parentNode.parentNode.id
 
         if (itemID) {
