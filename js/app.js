@@ -360,7 +360,7 @@ const controller = (function (budgetCtrl, UICtrl) {
         })
 
         document
-            .querySelector(DOM.lists)
+            .querySelector(DOM.container)
             .addEventListener('click', ctrlDeleteItem)
 
         document
