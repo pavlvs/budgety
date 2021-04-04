@@ -132,19 +132,19 @@ const budgetController = (function () {
 // UI CONTROLLER
 const UIController = (function () {
     const DOMstrings = {
-        inputType: '.add-type',
-        inputDescription: '.add-description',
-        inputValue: '.add-value',
-        addButton: '.add-btn',
-        incomeContainer: '.income-list',
-        expensesContainer: '.expenses-list',
-        budgetLabel: '.budget-value',
-        incomeLabel: '.budget-income-value',
-        expensesLabel: '.budget-expenses-value',
-        percentageLabel: '.budget-expenses-percentage',
-        lists: '.lists',
-        expensesPercentageLabel: '.item-percentage',
-        dateLabel: '.budget-title-month',
+        inputType: '.add__type',
+        inputDescription: '.add__description',
+        inputValue: '.add__value',
+        addButton: '.add__btn',
+        incomeContainer: '.income__list',
+        expensesContainer: '.expenses__list',
+        budgetLabel: '.budget__value',
+        incomeLabel: '.budget__income--value',
+        expensesLabel: '.budget__expenses--value',
+        percentageLabel: '.budget__expenses--percentage',
+        container: '.container',
+        expensesPercentageLabel: '.item__percentage',
+        dateLabel: '.budget__title--month',
     }
 
     const formatNumber = function (number, type) {
@@ -197,12 +197,12 @@ const UIController = (function () {
             if (type === 'income') {
                 element = DOMstrings.incomeContainer
                 html = /*html*/ `
-                    <div class="item row" id="income-%id%">
-                        <div class="col-md-6 item-description">%description%</div>
-                        <div class="col-md-6">
-                            <div class="item-value">%value%</div>
-                            <div class="item-delete">
-                                <button class="item-delete-btn"><i class="ion-ios-close-outline"></i></button>
+                    <div class="item clearfix" id="income-%id%">
+                        <div class="item__description">%description%</div>
+                        <div class="right clearfix">
+                            <div class="item__value">%value%</div>
+                            <div class="item__delete">
+                                <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
                             </div>
                         </div>
                     </div>
@@ -210,12 +210,14 @@ const UIController = (function () {
             } else if (type === 'expenses') {
                 element = DOMstrings.expensesContainer
                 html = /*html*/ `
-                    <div class="item row" id="expenses-%id%">
-                        <div class="col-md-6 item-description">%description%</div>
-                        <div class="col-md-6"><div class="item-value">%value%</div>
-                        <div class="item-percentage">21%</div>
-                        <div class="item-delete">
-                            <button class="item-delete-btn"><i class="ion-ios-close-outline"></i></button>
+                    <div class="item clearfix" id="expenses-%id%">
+                        <div class="item__description">%description%</div>
+                        <div class="right clearfix">
+                            <div class="item__value">%value%</div>
+                            <div class="item__percentage">21%</div>
+                            <div class="item__delete">
+                                <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
+                            </div>
                         </div>
                     </div>
                 `
